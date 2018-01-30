@@ -5,9 +5,23 @@ import pytz
 
 _cache_tz = None
 
+_systemv_tz = {
+    'AST4ADT#Canada' : 'Canada/Atlantic',
+    'CST6CDT#Canada' : 'Canada/Central',
+    'EST5EDT#Canada' : 'Canada/Eastern',
+    'MST7MDT#Canada' : 'Canada/Mountain',
+    'NST3:30NDT#Canada' : 'Canada/Newfoundland',
+    'PST8PDT#Canada' : 'Canada/Pacific',
+    'EST5#Canada' : 'Canada/Saskatchewan',
+}
+
 def _tz_from_env(tzenv):
     if tzenv[0] == ':':
         tzenv = tzenv[1:]
+
+    # HP-HX has something interesting TZ info
+    if _systemv_tz.has_key(tzenv):
+        tzenv = _systemv_tz[tzenv]
 
     # TZ specifies a file
     if os.path.exists(tzenv):
